@@ -1,2 +1,7 @@
 # For CMake
 build/
+subprojects/
+
+# For Ninja
+.ninja_deps
+.ninja_log
