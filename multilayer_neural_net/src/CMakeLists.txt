@@ -1,13 +1,17 @@
 cmake_minimum_required(VERSION 3.4.0)
 project(MultilayerNeuralNetwork)
-set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH}" "${CMAKE_SOURCE_DIR}/../../util/cmake")
 
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+#
 # Required packages
-find_package(GLM REQUIRED) # For matrix math.
-message("${GLM_INCLUDE_DIR}")
+#
+set(EXTERNAL_REPOS_DIR "${CMAKE_SOURCE_DIR}/../../subprojects")
+include_directories("${EXTERNAL_REPOS_DIR}/eigen")
 
 set(SOURCES
     main.cpp
 )
 
-add_executable(mnn "${SOURCES}" ${GLM_libraries})
+add_executable(mnn "${SOURCES}")

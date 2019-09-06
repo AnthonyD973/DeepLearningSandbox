@@ -1,0 +1,54 @@
+# This is my first Ninja file, and I'm not much into GNU Make either.
+# Don't judge!
+
+CLONE_OUTPUT_DIR=subprojects
+
+rule clone-git-repo
+    command = rm -rf $CLONE_OUTPUT_DIR/$project && git clone $Uri $CLONE_OUTPUT_DIR/$project
+    description = Cloning $Uri...
+
+rule move
+    command = mv $src $dest
+
+rule download-file
+    command = mkdir -p $destinationDir && cd $destinationDir && wget -O $outputFileName $Uri
+    description = Downloading $Uri...
+
+rule extract-bzip-file
+    command = mkdir -p $destinationDir && tar -xjf $bzipFile -C $destinationDir
+    description = Extracting $bzipFile...
+
+rule run-cmake
+    command = mkdir -p $cwd && cd $cwd && cmake -G Ninja $args $cMakeListsDir
+    description = Running CMake in $cwd...
+
+rule run-cmake-and-ninja
+    command = mkdir -p $cwd && cd $cwd && cmake -G Ninja $args $cMakeListsDir && ninja
+    description = Building $cwd...
+
+build $CLONE_OUTPUT_DIR/eigen.tar.bz2: download-file
+    Uri=http://bitbucket.org/eigen/eigen/get/3.3.7.tar.bz2
+    destinationDir=$CLONE_OUTPUT_DIR
+    outputFileName=eigen.tar.bz2
+
+build $CLONE_OUTPUT_DIR/eigen/eigen-eigen-323c052e1731: extract-bzip-file $CLONE_OUTPUT_DIR/eigen.tar.bz2
+    destinationDir=$CLONE_OUTPUT_DIR/eigen
+    bzipFile=$CLONE_OUTPUT_DIR/eigen.tar.bz2
+
+build $CLONE_OUTPUT_DIR/eigen: move $CLONE_OUTPUT_DIR/eigen/eigen-eigen-323c052e1731
+    src=$CLONE_OUTPUT_DIR/eigen/eigen-eigen-323c052e1731/*
+    dest=$CLONE_OUTPUT_DIR/eigen
+
+build $CLONE_OUTPUT_DIR/eigen/build: run-cmake $CLONE_OUTPUT_DIR/eigen
+    args=
+    cMakeListsDir=..
+    cwd=$CLONE_OUTPUT_DIR/eigen/build
+
+build multilayer_neural_net/build: run-cmake-and-ninja $CLONE_OUTPUT_DIR/eigen/build
+    args=
+    cMakeListsDir=../src
+    cwd=multilayer_neural_net/build
+
+build all: phony multilayer_neural_net/build
+
+default all
