@@ -1,3 +1,6 @@
+#ifndef _TYPES_TYPES_HPP_
+#define _TYPES_TYPES_HPP_
+
 #include <stdint.h>
 
 #include <Eigen/Dense>
@@ -17,3 +20,5 @@ using Vector = Eigen::Matrix<double, dim, 1>;
  */
 template <int dim>
 using LVector = Eigen::Matrix<double, 1, dim>;
+
+#endif // !_TYPES_TYPES_HPP_
