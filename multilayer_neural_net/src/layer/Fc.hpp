@@ -1,3 +1,6 @@
+#ifndef _LAYER_FC_HPP_
+#define _LAYER_FC_HPP_
+
 #include <inttypes.h>
 
 #include "layer/Layer.hpp"
@@ -9,7 +12,7 @@ class Fc : public Layer<Vector<in_act_num>, Vector<out_act_num>> {
     typedef Vector<in_act_num> X;
     typedef Vector<in_act_num + 1> XHat;
     typedef Vector<out_act_num> O;
-    typedef Eigen::Matrix<double, in_act_num + 1, out_act_num> Theta;
+    typedef Eigen::Matrix<double, out_act_num, in_act_num + 1> Theta;
 
 private:
     static XHat extendInput(const X& x) {
@@ -48,3 +51,5 @@ protected:
 private:
     Theta m_theta;
 };
+
+#endif // !_LAYER_FC_HPP_
