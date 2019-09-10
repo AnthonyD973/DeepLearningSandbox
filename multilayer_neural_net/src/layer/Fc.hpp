@@ -4,7 +4,6 @@
 #include <inttypes.h>
 
 #include "layer/Layer.hpp"
-#include "types/Types.hpp"
 #include "math/Functions.hpp"
 
 template <uint32_t in_act_num, uint32_t out_act_num>
@@ -28,7 +27,7 @@ public:
 
     virtual ~Fc() = default;
 
-    O infer(const X& input) {
+    virtual O infer(const X& input) const {
         O o = preactivate(extendInput(input));
         activate(o);
         return o;
