@@ -1,7 +1,11 @@
+#ifndef _MATH_FUNCTIONS_HPP_
+#define _MATH_FUNCTIONS_HPP_
+
 #include <math.h>
 #include <vector>
 #include <algorithm>
 #include <numeric>
+#include <type_traits>
 
 #include "types/Types.hpp"
 
@@ -11,9 +15,9 @@ namespace Functions {
         return 1 / (1 + exp(-x));
     }
 
-    template <uint32_t classNum>
-    inline Vector<classNum> softmax(const Vector<classNum>& input) {
-        typedef decltype(input(0)) elem_t;
+    template <class T>
+    inline T softmax(T& input) {
+        typedef typename std::remove_reference<decltype(input(0))>::type elem_t;
 
         // Compute exponential of inputs.
         std::vector<elem_t> exponentiated;
@@ -23,20 +27,21 @@ namespace Functions {
 
         // Compute normalization factor.
         elem_t normalFactor =
-            std::accumulate(exponentiated.begin(), exponentiated.end(), 0);
+            std::accumulate(exponentiated.begin(), exponentiated.end(), static_cast<elem_t>(0));
+
+        std::cout << normalFactor << std::endl;
 
         // Apply softmax.
-        Vector<classNum> softmaxResult;
         size_t i = 0;
         std::for_each(
             exponentiated.begin(),
             exponentiated.end(),
-            [&softmaxResult, &i, normalFactor](auto expElem) {
-                softmaxResult(i) = expElem / normalFactor;
+            [&input, &i, normalFactor](elem_t expElem) {
+                input(i) = expElem / normalFactor;
                 ++i;
             }
         );
-
-        return softmaxResult;
     }
 }
+
+#endif // !_MATH_FUNCTIONS_HPP_
