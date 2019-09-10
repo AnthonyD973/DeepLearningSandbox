@@ -1,11 +1,17 @@
 #include <iostream>
 #include <Eigen/Dense>
 
+#include "types/Types.hpp"
+#include "layer/Fc.hpp"
+
 int main() {
-  Eigen::MatrixXd m(2,2);
-  m(0,0) = 3;
-  m(1,0) = 2.5;
-  m(0,1) = -1;
-  m(1,1) = m(1,0) + m(0,1);
-  std::cout << m << std::endl;
+    Eigen::Matrix<double, 4, 3 + 1> theta;
+    theta << .1, .2, .1, .2, .01, .02, .01, .02, .2, .1, .2, .1, .1, .05, .1, .05;
+    Fc<3, 4> fc1{theta};
+    Vector<3> i;
+    i << 1, 2, 3;
+    
+    Vector<4> o = fc1.infer(i);
+    std::cout << o << '\n';
+    return 0;
 }

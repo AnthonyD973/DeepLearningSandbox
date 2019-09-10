@@ -45,7 +45,7 @@ build $CLONE_OUTPUT_DIR/eigen/build: run-cmake $CLONE_OUTPUT_DIR/eigen
     cwd=$CLONE_OUTPUT_DIR/eigen/build
 
 build multilayer_neural_net/build: run-cmake-and-ninja $CLONE_OUTPUT_DIR/eigen/build
-    args=
+    args=-DCMAKE_BUILD_TYPE=Debug
     cMakeListsDir=../src
     cwd=multilayer_neural_net/build
 

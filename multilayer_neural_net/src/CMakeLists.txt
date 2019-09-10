@@ -8,10 +8,13 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # Required packages
 #
 set(EXTERNAL_REPOS_DIR "${CMAKE_SOURCE_DIR}/../../subprojects")
-include_directories("${EXTERNAL_REPOS_DIR}/eigen")
+include_directories("${EXTERNAL_REPOS_DIR}/eigen" "${CMAKE_SOURCE_DIR}")
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0 -g")
 
 set(SOURCES
     main.cpp
+
 )
 
 add_executable(mnn "${SOURCES}")
